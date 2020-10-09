@@ -1,13 +1,44 @@
-# HDFS Inotify Example
+# HDFS Inotify Java Program
 
-This example is based on https://github.com/onefoursix/hdfs-inotify-example
-The pom.xml has been modified for using plain Apache upstream artifacts,
-instead of Cloudera artifacts.
+Gets iNotify HDFS events and print out in JSON to stdout.
 
-HDFS iNotify example
+# HDFS iNotify API
 
-See http://www.slideshare.net/Hadoop_Summit/keep-me-in-the-loop-inotify-in-hdfs for info on iNotify, 
-particularly slide #16
+Clients obtain a DFSInotifyEventInputStream, from which they can read events, by calling
+HdfsAdmin.getInotifyEventStream(). Filesystem events that happen after the client makes
+this call will be available in the stream. DFSInotifyEventInputStream provides the following
+three methods:
+
+1. public Event **poll()** – a non-blocking call that returns the next event if it is immediately available, otherwise null
+2. public Event **poll(long time, TimeUnit tu)** – waits up to the given amount of time for a new event, otherwise returns null
+3. public Event **take()** – blocks indefinitely for a new event
+
+## Packages: 
+
+### Package: org.apache.hadoop.hdfs.inotify
+
+Classes: [Event](https://hadoop.apache.org/docs/r3.2.1/api/org/apache/hadoop/hdfs/inotify/Event.html), [EventBatch](https://hadoop.apache.org/docs/r3.2.1/api/org/apache/hadoop/hdfs/inotify/EventBatch.html)
+
+### Package: org.apache.hadoop.hdfs.DFSInotifyEventInputStream
+
+Class: [DFSInotifyEventInputStream](https://hadoop.apache.org/docs/r3.2.1/api/index.html?org/apache/hadoop/hdfs/DFSInotifyEventInputStream.html)
+
+
+# iNotify Protocol
+
+Protocol buffers used to communicate edits to clients: [inotify.proto](https://github.com/apache/hadoop/blob/trunk/hadoop-hdfs-project/hadoop-hdfs-client/src/main/proto/inotify.proto)
+
+# HDFS iNotify Documentation
+
+Docs folder:
+
+inotify-design.4.pdf
+
+Large-Scale-Multi-Tenant-Inotify-Service.pdf
+
+2015-03-05_keep_me_in_the_loop_introducing_HDFS_inotify.pdf
+
+# Usage example
 
 You must run this tool as the hdfs user.
 
@@ -81,4 +112,3 @@ You should see a couple of CREATE events, a RENAME and an UNLINK, like this:
     event type = UNLINK
       path = /user/mark/data107.txt
       timestamp = 1436586074079
-
