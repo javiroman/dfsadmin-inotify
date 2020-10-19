@@ -114,11 +114,28 @@
                                     <mainClass>org.inotify.HdfsINotify</mainClass>
                                 </transformer>
                             </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.*</exclude>
+                                        <exclude>META-INF/*</exclude>
+                                        <exclude>META-INF/*/*</exclude>
+                                        <exclude>META-INF/*/*/*</exclude>
+                                        <exclude>META-INF/*/*/*/*</exclude>
+                                        <exclude>about.html</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
                             <artifactSet>
-								  <excludes>
-                                    <!-- javax.json-api is only for building -->
-									<exclude>javax.json:javax.json-api:jar:</exclude>
-								  </excludes>
+                                <!-- for dependencies exluding extracted with:
+                                     mvn dependency:tree -Ddetail=true -->
+                                <excludes>
+                                    <!-- only for building -->
+                                    <exclude>javax.json:javax.json-api:jar:</exclude>
+                                    <!-- only for building -->
+                                    <exclude>com.google.guava:failureaccess:jar:</exclude>
+                                </excludes>
                             </artifactSet>
                         </configuration>
                     </execution>
