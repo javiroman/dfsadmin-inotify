@@ -12,7 +12,7 @@ public class EventManagement {
         switch (type) {
             case CREATE:
                 Event.CreateEvent createEvent = (Event.CreateEvent) event;
-                if (inSearchPath(regex, createEvent.getPath())) {
+                if (notInSearchPath(regex, createEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -29,7 +29,7 @@ public class EventManagement {
                 break;
             case CLOSE:
                 Event.CloseEvent closeEvent = (Event.CloseEvent) event;
-                if (inSearchPath(regex, closeEvent.getPath())) {
+                if (notInSearchPath(regex, closeEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -41,7 +41,7 @@ public class EventManagement {
                 break;
             case APPEND:
                 Event.AppendEvent appendEvent = (Event.AppendEvent) event;
-                if (inSearchPath(regex, appendEvent.getPath())) {
+                if (notInSearchPath(regex, appendEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -51,7 +51,7 @@ public class EventManagement {
                 break;
             case RENAME:
                 Event.RenameEvent renameEvent = (Event.RenameEvent) event;
-                if (inSearchPath(regex, renameEvent.getSrcPath())) {
+                if (notInSearchPath(regex, renameEvent.getSrcPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -63,7 +63,7 @@ public class EventManagement {
                 break;
             case METADATA:
                 Event.MetadataUpdateEvent metadataUpdateEvent = (Event.MetadataUpdateEvent) event;
-                if (inSearchPath(regex, metadataUpdateEvent.getPath())) {
+                if (notInSearchPath(regex, metadataUpdateEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -77,7 +77,7 @@ public class EventManagement {
                 break;
             case UNLINK:
                 Event.UnlinkEvent unlinkEvent = (Event.UnlinkEvent) event;
-                if (inSearchPath(regex, unlinkEvent.getPath())) {
+                if (notInSearchPath(regex, unlinkEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -88,7 +88,7 @@ public class EventManagement {
                 break;
             case TRUNCATE:
                 Event.TruncateEvent truncateEvent = (Event.TruncateEvent) event;
-                if (inSearchPath(regex, truncateEvent.getPath())) {
+                if (notInSearchPath(regex, truncateEvent.getPath())) {
                     break;
                 }
                 json = Json.createObjectBuilder()
@@ -112,8 +112,7 @@ public class EventManagement {
         }
     }
 
-    public boolean inSearchPath(String regexSearchPath, String eventPath) {
-        return  Pattern.matches(regexSearchPath, eventPath);
-
+    public boolean notInSearchPath(String regexSearchPath, String eventPath) {
+        return Pattern.matches(regexSearchPath + "/.*", eventPath);
     }
 }

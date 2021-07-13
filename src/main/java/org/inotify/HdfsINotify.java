@@ -34,19 +34,23 @@ public class HdfsINotify {
 			eventStream = admin.getInotifyEventStream(lastReadTxid);
 		}
 
+		boolean rawMode = false;
+		if (System.getProperty("Raw") != null) {
+			rawMode = System.getProperty("Raw", "false").equals("true");
+		}
+
 		while (true) {
 			EventBatch batch = eventStream.take();
-
 			for (Event event : batch.getEvents()) {
-				System.out.println(event);
-				/*
-			    String outputString = new
-						String(em.getJsonFormat(event, event.getEventType(), batch.getTxid(), args[2]));
-			    if (outputString != "{}") {
-					System.out.println(outputString);
+				if (rawMode) {
+					System.out.println(event);
+				} else {
+					String outputString = new
+							String(em.getJsonFormat(event, event.getEventType(), batch.getTxid(), args[2]));
+					if (outputString != "{}") {
+						System.out.println(outputString);
+					}
 				}
-
-				 */
 			}
 		}
 	}
